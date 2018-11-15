@@ -12,9 +12,11 @@ function sum() {
       sum += args2[i]
     }
 
+    //  on second and others call
     return args2.length ? closure : sum
   }
 
+  //    on first call
   return closure.apply(null, layer.call(arguments))
 }
 
