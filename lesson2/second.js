@@ -1,45 +1,38 @@
 //	***	///
 
-
-
 var fn1 = () => {
-console.log('fn1 work')
-return Promise.resolve(1)
+  console.log("fn1 work")
+  return Promise.resolve(1)
 }
 
-var fn2 = () => new Promise(resolve => {
-console.log('fn2')
-setTimeout(() => resolve(2), 1000)
-})
+var fn2 = () =>
+  new Promise(resolve => {
+    console.log("fn2")
+    setTimeout(() => resolve(2), 1000)
+  })
 
-async function promiseReduce (asyncFunctions, reduce, initialValue) { 
+async function promiseReduce(asyncFunctions, reduce, initialValue) {
+  // const args = Array.from(arguments)
 
+  let memo = initialValue
 
-	const args = Array.from(arguments);
+  for (let i = 0; i < asyncFunctions.length; i++) {
+    console.log("the memo is " + memo)
 
-	let memo = initialValue
-	
+    let val = await asyncFunctions[i]()
 
-	for(let i = 0; i < asyncFunctions.length; i++) {
+    console.log(reduce(memo, val))
 
-
-		console.log('the memo is ' + memo)
-
-		let val = await args[0][i]()
-		
-		console.log(reduce(memo, val))
-		
-		memo += val
-		
-	}
-
+    memo += val
+  }
 }
 
 promiseReduce(
-	[fn1, fn2], 
-function (memo, value) {
-console.log('reduce')
-return memo * value
-}, 
-1
+  [fn1, fn2],
+  function(memo, value) {
+    console.log("reduce")
+
+    return memo * value
+  },
+  1
 )
