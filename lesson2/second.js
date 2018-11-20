@@ -16,14 +16,18 @@ async function promiseReduce(asyncFunctions, reduce, initialValue) {
 
   let memo = initialValue
 
+  let res
+
   for (let i = 0; i < asyncFunctions.length; i++) {
     console.log("the memo is " + memo)
 
     let val = await asyncFunctions[i]()
 
-    console.log(reduce(memo, val))
+    !res ? (res = reduce(memo, val)) : (res = reduce(res, val))
 
-    memo += val
+    console.log("The result is " + res)
+
+    // memo += val
   }
 }
 
