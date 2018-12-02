@@ -1,8 +1,8 @@
 const http = require('http');
 
-const fetch = require("node-fetch");
+// const fetch = require("node-fetch");
 
-var request = require("request");
+// var request = require("request");
 
 
 someGetWork = () => {
@@ -27,27 +27,42 @@ someGetWork = () => {
         console.log("Error: " + err.message);
       });
 
-
+      return "We made it!"
 
 }
 
-makeSequence = async (amount) => {
+makeSequence = async (amount, mode) => {
 
-  var map = new Map;
-  map.set('France', 'Paris', 'Moscow')
+    let i
+    let res
 
-    for (let i = 0; i < amount; i++) {
 
-      new Promise(function(resolve, reject) {
-        // Do async job
-        someGetWork()
-        // resolve(()=>console.log('запрос прошел'))
-       })
+    for (i = 0; i < amount; i++) {
+
+      if (mode === 'parallel') {
+        let res = new Promise(function(resolve, reject) {
+          resolve(someGetWork())
+        })
+
+        console.log('the res is ' + res)
+      }
+      else if(mode === 'onebyone') {
+
+        let res = await new Promise(function(resolve, reject) {
+          resolve(someGetWork())
+        })
+
+        console.log('the res is ' + res)
+        
+
+      }
     }
 
 }
 
 
 
-makeSequence(50)
+makeSequence(50, 'parallel')
+makeSequence(50, 'onebyone')
+
 
