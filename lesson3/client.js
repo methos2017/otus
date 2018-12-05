@@ -26,12 +26,6 @@ someGetWork = () => {
       }).on("error", (err) => {
         console.log("Error: " + err.message);
       });
-
-      return new Promise(function(resolve, reject) {
-
-        resolve(console.log('lets stay together'))
-
-      })
 }
 
 makeSequence = async (amount, mode) => {
@@ -40,27 +34,38 @@ makeSequence = async (amount, mode) => {
     let res
 
 
-    for (i = 0; i < amount; i++) {
 
       if (mode === 'parallel') {
 
-        someGetWork()
+        for (i = 0; i < amount; i++) {
 
+
+          someGetWork()
+
+
+        }
       }
       else if(mode === 'onebyone') {
 
-        await someGetWork()
-
+        [...Array(amount)].reduce( (p, _, i) => 
+        p.then(_ => new Promise(resolve =>
+            setTimeout(function () {
+                // console.log(i)
+                someGetWork()
+                resolve()
+            }, Math.random() * 1000)
+        ))
+    , Promise.resolve() )
         
 
       }
     }
 
-}
 
 
 
-makeSequence(50, 'parallel')
+
+// makeSequence(50, 'parallel')
 makeSequence(50, 'onebyone')
 
 
