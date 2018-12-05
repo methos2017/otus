@@ -27,8 +27,11 @@ someGetWork = () => {
         console.log("Error: " + err.message);
       });
 
-      return "We made it!"
+      return new Promise(function(resolve, reject) {
 
+        resolve(console.log('lets stay together'))
+
+      })
 }
 
 makeSequence = async (amount, mode) => {
@@ -40,19 +43,14 @@ makeSequence = async (amount, mode) => {
     for (i = 0; i < amount; i++) {
 
       if (mode === 'parallel') {
-        let res = new Promise(function(resolve, reject) {
-          resolve(someGetWork())
-        })
 
-        console.log('the res is ' + res)
+        someGetWork()
+
       }
       else if(mode === 'onebyone') {
 
-        let res = await new Promise(function(resolve, reject) {
-          resolve(someGetWork())
-        })
+        await someGetWork()
 
-        console.log('the res is ' + res)
         
 
       }
